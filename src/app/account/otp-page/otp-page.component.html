@@ -1,0 +1,49 @@
+
+<section class="auth-page-wrapper py-5 position-relative d-flex align-items-center justify-content-center min-vh-100">
+  <div class="container">
+    <div class="row  justify-content-center  shadow-p-2">
+      <div class="col-lg-11 ">
+        <div class="card mb-0">
+          <div class="row g-0 align-items-center box">
+            <div class="col-lg-5 mx-auto   order-lg-0 order-1">
+              <div class=" mb-0 border-0 shadow-none mb-0">
+                <div class="">
+                  <img
+                  src="../../../assets/images/bg/vecteezy_digital-data-protection-design-illustration-cyber-security_23258496_423.png"
+                  alt="" class="img-fluid img">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 mx-auto   order-lg-1 order-0">
+              <div class=" mb-0 border-0 shadow-none mb-0">
+                <div class="card-body p-sm-5 m-lg-4">
+                  <div class="text-center img">
+                    <img src="assets/images/logo/gigasol logo.png" alt="" height="75">
+                  </div>
+                  <div class="text-center mt-4">
+                    <h5 class="fs-3xl">Welcome</h5>
+                    <p class="text-muted">Please enter the one time password
+                      to verify your account.</p>
+                  </div>
+                  <div class=" mt-1">
+                    <div class="otp-box text-center">
+                      <h6 class="mb-4">Enter Otp</h6>
+                      <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6}"></ng-otp-input>
+                      <ng-container *ngIf="!isShown">
+                      <p class="mb-0 mt-2 fw-bold font">{{ display }}</p>
+                      <!-- <button class="btn btn-primary mt-2" (keyup.enter)="save()">Verify</button>   -->
+                    </ng-container>
+                    <ng-container *ngIf="isShown">
+                      <button class="btn btn-primary mt-2"  (click)="resend()">Resend</button>
+                    </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

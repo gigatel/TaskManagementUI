@@ -1,0 +1,72 @@
+.active {
+  /* Add your desired styles for the active link */
+  color: blue;
+  font-weight: bold;
+}
+
+.solution {
+  background: linear-gradient(to bottom, #9ec5c7, rgba(124, 112, 217, 0.831372549));
+}
+
+.network{
+  background: linear-gradient(to left, rgb(140 169 161 / 93%), rgb(167 160 221 / 83%));
+}
+
+.infoComm{
+  background: linear-gradient(to left, #51c99da3, rgb(201 128 128 / 91%));
+}
+.tecnoSoft{
+  background: linear-gradient(to left, #a590c7, rgb(191 146 146 / 68%));
+}
+.vendor{
+  background: linear-gradient(to right, #7698c2, rgb(159 192 202 / 83%));
+}
+
+.navbar-menu {
+  border-right: #ffff;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link.active {
+  color: #030000;
+  // background-color: transparent;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link {
+  padding: 0.55rem 1.8rem;
+  color: #f5f5f5;
+  position: relative;
+  font-size: 14px;
+  font-family: var(--tb-font-sans-serif);
+  font-weight: var(--tb-vertical-menu-item-font-weight);
+  margin: 0;
+}
+
+
+.textcolor{
+  color: #ffff;
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]:after {
+  display: block;
+  content: "\f0142";
+  font-family: "Material Design Icons";
+  margin-left: auto;
+  transition: transform 0.2s;
+  font-size: 1.05rem;
+  position: absolute;
+  right: 20px;
+  color: #efe6a0;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link.active {
+  // color: white;
+  // background-color: #7e46463b;
+  // font-family: sans-serif;
+  // border-radius: 5px 5px 5px 5px;
+  // // padding: 2px 16px;
+  // margin-right: 6px;
+  color: #9774f7;
+  // font-family: sans-serif;
+}
+
+

@@ -1,0 +1,20 @@
+.img {
+  margin-left: 40px;
+}
+
+
+.box {
+  background-image: linear-gradient(to left, rgba(255, 0, 0, 0), #e6e6e6);
+  box-shadow: 1px 3px 11px -7px rgba(15, 15, 15, 1);
+}
+
+@media only screen and (max-width: 768px) {
+
+  .img {
+    display: none;
+  }
+
+  .font {
+    font-size: 20px !important;
+  }
+}
