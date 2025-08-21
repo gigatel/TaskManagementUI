@@ -1,9 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MenuItem } from './menu.model';
-import { forEach } from 'lodash';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
-import { AuthenticationService } from 'src/app/core/services/auth.service';
-import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +35,7 @@ export class MenuClass {
           ) {
             if (
               this.menu[i].subItems[j].subItems[k].policyName ==
-                'NoPolicyCheck' ||
+              'NoPolicyCheck' ||
               this.tokenStorageService.checkPolicies(
                 this.menu[i].subItems[j].subItems[k].policyName
               )
@@ -127,18 +124,21 @@ export class MenuClass {
         id: 101,
         label: 'Task Mangement',
         icon: 'ph-user-focus-fill',
+        policyName: 'AccessTaskManagement',
         subItems: [
           {
             id: 1,
             label: 'Task',
             parentId: 101,
-            role: 'admin',
+            policyName: 'AccessTask',
             subItems: [
               {
                 id: 1,
                 label: 'Task List',
                 link: '/task-management/task/task-list',
                 parentId: 1,
+                policyName: 'AccessTaskList',
+
               },
             ],
           },

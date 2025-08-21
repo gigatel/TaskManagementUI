@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { LAYOUT } from './layout.model';
 import { EventService } from '../core/services/event.service';
 import { FormGroup } from '@angular/forms';
-import { Apiservice } from '../core/services/api.service';
 import { map } from 'rxjs';
 
 @Component({
@@ -19,8 +18,8 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   companyDropdown: any[] = [];
   isShown =  false;
 
-  constructor(private eventService: EventService, private apiservice: Apiservice) { }
-  
+  constructor(private eventService: EventService) { }
+
   ngAfterViewInit(): void {
     const data = document.getElementById("myModal");
     if (data != null) {

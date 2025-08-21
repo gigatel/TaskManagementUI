@@ -20,7 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const getToken = this.tokenStorageService.getToken();
+    const getToken = this.tokenStorageService.getCookieToken();
     if (getToken && getToken != '' && getToken != null && getToken != undefined) {
       request = request.clone({
         setHeaders: {

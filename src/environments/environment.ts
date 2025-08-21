@@ -21,11 +21,14 @@ export const environment = {
   production: false,
 
   //////////Production URL //////////////
-  // apiUrl: "http://prod.gigatel.me:40901/api",
+  // apiUrl: "http://prod.gigatel.me:60109/api",
+  // hrmsApiUrl: 'http://mob.gigatel.me:40101/api/',
 
 
   ////////////////////// Development URL /////////////////////////
-  apiUrl: "http://mob.gigatel.me:40901/api",
+  apiUrl: "http://mob.gigatel.me:60109/api",
+  hrmsApiUrl: 'http://mob.gigatel.me:40101/api/',
+
 }
 
 /*

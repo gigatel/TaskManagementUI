@@ -70,7 +70,7 @@
 
           <input class="form-control" id="datepicker-range" bsDatepicker formControlName="selectDate"
             data-provider="flatpickr" data-range-date="true" placeholder="Select date"
-            [bsConfig]="{keepDatepickerOpened:true, dateInputFormat: 'DD/MM/YYYY'}">
+            [bsConfig]="{keepDatepickerOpened:true, dateInputFormat: 'DD/MM/YYYY'}" [minDate]="maxDate">
         </div>
 
         <div class="col-md-1" *ngIf="taskForm.controls['scheduleType'].value === 'Recuring'">
@@ -78,7 +78,7 @@
           <!-- <input type="date" class="form-control" formControlName="endDate"> -->
           <input class="form-control" id="datepicker-range" bsDatepicker formControlName="endDate"
             data-provider="flatpickr" data-range-date="true" placeholder="Select date"
-            [bsConfig]="{keepDatepickerOpened:true, dateInputFormat: 'DD/MM/YYYY'}">
+            [bsConfig]="{keepDatepickerOpened:true, dateInputFormat: 'DD/MM/YYYY'}" [minDate]="maxDate">
         </div>
 
         <div class="col-md-1" *ngIf="taskForm.controls['scheduleType'].value == 'OneTime'">
@@ -87,7 +87,7 @@
 
           <input class="form-control" id="datepicker-range" bsDatepicker formControlName="reminder"
             data-provider="flatpickr" data-range-date="true" placeholder="Select date"
-            [bsConfig]="{keepDatepickerOpened:true, dateInputFormat: 'DD/MM/YYYY'}">
+            [bsConfig]="{keepDatepickerOpened:true, dateInputFormat: 'DD/MM/YYYY'}" [minDate]="maxDate">
 
         </div>
 
@@ -141,7 +141,7 @@
 <div class="card shadow-lg">
   <div class="row align-items-center p-2">
     <div class="col-md-2">
-      <h5 class="">Task Listing</h5>
+      <h5 class="">Task List</h5>
     </div>
     <div class="col-md-4">
 
@@ -248,8 +248,8 @@
             <td>{{ (item.createdOn | date: 'dd-MM-YYYY hh:mm a') || '-' }}</td>
             <td>
               <ng-container *ngIf="item.isActive">
-                <button class="btn btn-primary btn-sm m-1" (click)="edit(item.id)" *ngIf="tks.checkPolicies('AccessScheduleEditTask')">Edit</button>
-                <button class="btn btn-danger btn-sm" (click)="deleteTask(item.id)" *ngIf="tks.checkPolicies('AccessScheduleInActiveTask')">InActive</button>
+                <button class="btn btn-primary btn-sm m-1" (click)="edit(item.id)" *ngIf="tks.checkPolicies('AccessEditTask')">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteTask(item.id)" *ngIf="tks.checkPolicies('AccessInActiveTask')">InActive</button>
               </ng-container>
 
             </td>
@@ -257,7 +257,7 @@
         </ng-container>
         <ng-container *ngIf="taskList.length === 0">
           <tr>
-            <td colspan="12" class="text-center  paddingloader">
+            <td colspan="20" class="text-center  paddingloader">
               <div *ngIf="loader" class="spinner-border text-info  " role="status">
                 <span class="visually-hidden">Loading...</span>
               </div>

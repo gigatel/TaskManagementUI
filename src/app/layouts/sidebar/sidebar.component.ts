@@ -32,8 +32,8 @@ export class SidebarComponent {
     this.selectedItem = true
     // Menu Items
     //const isMenu = new MenuClass();
-    // this.menuItems = this.isMenu.GetUserMenue();
-    this.menuItems = this.isMenu.menu;
+    this.menuItems = this.isMenu.GetUserMenue();
+    // this.menuItems = this.isMenu.menu;
     // const getAdmin = isMenu.menu.filter(x => x.authentication === 'designaionName');
     // const getUser = isMenu.menu.filter(x => x.authentication === 'user');
 

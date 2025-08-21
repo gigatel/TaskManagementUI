@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Editor, TOOLBAR_FULL } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalService } from 'src/app/core/services/global-service';
 import { TaskManagementService } from 'src/app/core/services/task-management.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 
@@ -13,6 +14,7 @@ import { TokenStorageService } from 'src/app/core/services/token-storage.service
 })
 export class TaskListComponent {
  taskForm!: FormGroup;
+ maxDate = new Date();
 
   showBoundaryLinks!: boolean;
   showDirectionLinks!: boolean;
@@ -57,6 +59,7 @@ export class TaskListComponent {
   private ts = inject(ToastrService);
   private tms = inject(TaskManagementService);
   public tks = inject(TokenStorageService);
+  private gs = inject(GlobalService);
 
   ngOnInit(): void {
     this.taskForm = new FormGroup({
@@ -103,6 +106,7 @@ export class TaskListComponent {
   submit(text: string): void {
     let payload: any;
     if (!(this.taskForm.valid)) {
+      console.log(this.taskForm)
       this.ts.warning('Please Select All Required Fields!!')
       return
     }
@@ -119,12 +123,12 @@ export class TaskListComponent {
       scheduleType: this.f['scheduleType'].value ?? '',
       schedule: this.f['schedule'].value ?? '',
       scheduleDay: this.f['selecteDay'].value ?? '',
-      scheduleDate: this.f['scheduleType'].value === 'OneTime' ? this.f['reminder'].value : (this.f['selectDate'].value ? this.f['selectDate'].value : ''),
+      scheduleDate: this.f['scheduleType'].value === 'OneTime' ? this.gs.convertDateObjIntoString(this.f['reminder'].value) : (this.f['selectDate'].value ?  this.gs.convertDateObjIntoString(this.f['selectDate'].value) : ''),
       scheduleTime: text === 'save' && this.f['time'].value ? this.f['time'].value + '' + ':00' : (this.f['time'].touched || this.f['time'].dirty ? this.f['time'].value + '' + ':00' : this.f['time'].value),
       taskSubject: this.f['subject'].value ?? '',
       taskDescription: textWithLineBreaks ?? '',
       receiverEmailId: this.f['emails'].value ?? '',
-      endDate: this.f['endDate'].value ?? ''
+      endDate: this.f['endDate'].value ?  this.gs.convertDateObjIntoString(this.f['endDate'].value) : ''
     }
 
     payload = Object.fromEntries(
@@ -182,12 +186,10 @@ export class TaskListComponent {
             }
           } else {
             this.taskList = [];
-            this.ts.warning(res.message);
           }
         } else {
           this.taskList = [];
           this.ts.warning(res.message);
-
         }
       },
       error: (err) => {

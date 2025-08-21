@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root'
   })
-  
+
   export class GlobalService {
     constructor() { }
     ConvertLocalISOTime(date:any) {
@@ -45,11 +45,11 @@ import { Injectable } from "@angular/core";
       const year = date.getUTCFullYear();
       const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Month is 0-based
       const day = String(date.getUTCDate()).padStart(2, '0');
-      
+
       const hour = String(date.getHours()).padStart(2, '0');
       const minute = String(date.getMinutes()).padStart(2, '0');
       const second = String(date.getSeconds()).padStart(2, '0');
-              
+
       const strDate = year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
       return strDate
     }
@@ -62,7 +62,7 @@ import { Injectable } from "@angular/core";
       const getDate = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
-     return `${year}-${month < 10 ? '0' + month : month}-${getDate < 10 ? '0' + date : date}`;
+     return `${year}-${month < 10 ? '0' + month : month}-${getDate < 10 ? '0' + getDate : getDate}`;
     }
 
   }
