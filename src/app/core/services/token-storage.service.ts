@@ -31,6 +31,7 @@ export class TokenStorageService implements OnInit {
 
   signOut(): void {
     window.localStorage.clear();
+    window.close();
     Cookie.deleteAll();
   }
 
