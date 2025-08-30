@@ -147,9 +147,9 @@
 
     </div>
     <div class="col-md-2">
-      <!-- <ng-select [items]="empList" bindLabel="empName" bindValue="id" placeholder="Select Employee..." [(ngModel)]="empId"
+      <ng-select [items]="empList" bindLabel="empName" bindValue="id" placeholder="Select Employee..." [(ngModel)]="empId"
         [multiple]="true" (ngModelChange)="getEmpId($event)">
-      </ng-select> -->
+      </ng-select>
       <ng-container *ngIf="tks.checkPolicies('AccessTaskEmp')">
          <ng-select #combo [multiple]="true" [items]="empList" [closeOnSelect]="false" placeholder="Select"
         bindLabel="empName" bindValue="id" [(ngModel)]="empId" (ngModelChange)="getEmpId($event)">

@@ -52,3 +52,48 @@ export interface getTaskScheduledEmpDD extends TaskManagement {
     }
   ];
 }
+
+// src/app/core/models/task-management.models.ts
+
+export interface ScheduleFilterInput {
+  emailIds:string;
+  empIds: string;
+  scheduleType: string;
+  status: string;
+  page: number;
+  size: number;
+  search: string;
+}
+
+export interface TaskEmailHistory {
+  id: number;
+  messageName: string;
+  emailSubject: string;
+  emailContent: string;
+  emailSentOn: Date;
+  emailSentCondition: string;
+  sentTime: Date;
+  createdBy: number;
+  createdByName: string;
+  createdOn: Date;
+  isActive: boolean;
+}
+
+export interface TaskHistoryResponse {
+  recordsTotal: number;
+  recordsFiltered: number;
+  success: boolean;
+  status: number;
+  message: string;
+  data: TaskEmailHistory[];
+}
+export interface GetDistinctEmailsForDD extends TaskManagement {
+  data: GetDistinctEmailsDetail []
+}
+
+export interface GetDistinctEmailsDetail{
+  email: string
+}
+
+
+

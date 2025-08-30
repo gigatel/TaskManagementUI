@@ -1,0 +1,183 @@
+<div class="card shadow-lg">
+  <div class="row align-items-center p-2">
+    <div class="col-md-3">
+      <h5>Email Sent History</h5>
+    </div>
+
+    <div class="col-md-2 ms-auto">
+  <ng-select
+    [items]="emailList"
+    bindLabel="email"
+    bindValue="email"
+    placeholder="Select Email..."
+    [(ngModel)]="selectedEmails"
+    [multiple]="true"
+    (ngModelChange)="onEmailChange($event)"
+    id="emailDropdown">
+
+    <!-- Custom multi-label display -->
+    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+      <div class="ng-value" *ngIf="items.length > 0">
+        <span class="ng-value-icon left" (click)="clear(items[0])" aria-hidden="true">×</span>
+        <span class="ng-value-label">{{ items[0].email }}</span>
+        
+      </div>
+      <div class="ng-value" *ngIf="items.length > 1">
+        <span class="ng-value-label">{{ items.length - 1 }} more...</span>
+      </div>
+    </ng-template>
+
+    <!-- Custom dropdown option template -->
+    <ng-template ng-option-tmp let-item="item">
+      <div class="d-flex">
+        {{ item.email }}
+      </div>
+    </ng-template>
+
+  </ng-select>
+</div>
+
+
+
+    <div class="col-md-2">
+      <ng-select [items]="empList" bindLabel="empName" bindValue="id" placeholder="Select Employee..."
+        [(ngModel)]="empId" [multiple]="true" (ngModelChange)="getEmpId($event)">
+      </ng-select>
+
+
+
+      <ng-container *ngIf="empList && empList.length > 0">
+        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+          <div class="ng-value" *ngFor="let item of items | slice:0:1">
+            <span class="ng-value-label">{{ getEmpName(item)}}</span>
+            <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+          </div>
+          <div class="ng-value" *ngIf="items.length > 1">
+            <span class="ng-value-label">{{items.length - 1}} more...</span>
+          </div>
+        </ng-template>
+
+        <ng-template ng-header-tmp>
+          <div>
+            <button class="btn btn-link" (click)="onSelectAll()">Select All</button>
+            <button class="btn btn-link" (click)="onClearAll()">Clear All</button>
+          </div>
+        </ng-template>
+
+        <ng-template ng-option-tmp let-item="item">
+          <div class="d-flex">
+            {{ item.empName + '(' + item.employeeCode + ')' }}
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+
+
+    <div class="col-md-2 ">
+      <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Search..."
+        class="form-control" />
+    </div>
+
+    <div class="col-md-2" style="display: none;">
+      <ng-select [items]="statusDD" bindLabel="name" bindValue="id" placeholder="Select Status..." [(ngModel)]="status"
+        [multiple]="true" (ngModelChange)="getStatus($event)">
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="card-body p-0">
+
+    <table class="table table-striped table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>S.no</th>
+          <th>Task Name</th>
+          <th>Task Subject</th>
+          <th>Description</th>
+          <th>Receiver Emails</th>
+          <th>Email Sent Condition</th>
+          <th>Sent Time</th>
+          <th>Created By</th>
+
+          <th style="display: none;">Is Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="taskList && taskList.length > 0">
+          <tr *ngFor="let item of taskList; let i = index">
+            <td>{{ ((filterInput.page - 1) * filterInput.size) + i + 1 }}</td>
+            <td>{{ item.messageName || '-' }}</td>
+            <td>{{ item.emailSubject || '-' }}</td>
+            <td class="w-20">
+              <div class="ellipsis-content">
+                {{ getPreviewText(item.emailContent, 15) }}
+                <a *ngIf="isLong(item.emailContent, 15)" href="javascript:void(0)"
+                  (click)="openModal(item.emailContent)">
+                  Read more
+                </a>
+              </div>
+            </td>
+
+            <td>{{ item.emailSentOn || '-' }}</td>
+            <td>{{ item.emailSentCondition || '-' }}</td>
+            <td>{{ item.sentTime ? (item.sentTime | date:'dd-MM-yyyy hh:mm a') : '-' }}</td>
+            <td>{{ item.createdByName || '-' }}</td>
+            <td style="display: none;">
+              <span class="badge" [ngClass]="item.isActive ? 'bg-success' : 'bg-danger'">
+                {{ item.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="taskList.length === 0">
+          <tr>
+            <td colspan="11" class="text-center">No records found.</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="row mb-3 p-1">
+      <div class="col-md-8 d-flex align-items-center">
+        <pagination [directionLinks]="true" [boundaryLinks]="false" [totalItems]="totalRecords"
+          [itemsPerPage]="filterInput.size" [(ngModel)]="filterInput.page" (pageChanged)="pageChanged($event)">
+        </pagination>
+      </div>
+
+      <div class="col-md-4 d-flex justify-content-end align-items-center">
+        <label class="me-2 fw-bold">Show:</label>
+        <select class="form-select w-auto" [(ngModel)]="filterInput.size" (ngModelChange)="onPageSizeChange($event)">
+
+          <option [value]="10">10</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+        </select>
+
+        <label class="me-2 fw-bold">entries</label>
+      </div>
+    </div>
+    <!-- Full Content Modal -->
+    <div *ngIf="showModal" class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Email Content</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body" style="max-height: 70vh; overflow: auto;">
+            <div [innerHTML]="modalContentSafe"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backdrop -->
+    <div *ngIf="showModal" class="modal-backdrop fade show"></div>
+
+  </div>
+</div>
