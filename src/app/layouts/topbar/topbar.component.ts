@@ -9,6 +9,7 @@ import { cartList } from 'src/app/pages/ecommerce/cart/data';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { notification } from './data';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-topbar',
@@ -340,5 +341,9 @@ export class TopbarComponent {
     //   this.authFackservice.logout();
     // }
     this.router.navigate(['/login']);
+  }
+
+  selectCompany(): void{
+    window.open(environment.hrmsUi,'_blank')
   }
 }

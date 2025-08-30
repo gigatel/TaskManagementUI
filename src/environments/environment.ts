@@ -22,12 +22,15 @@ export const environment = {
 
   //////////Production URL //////////////
   // apiUrl: "http://prod.gigatel.me:60109/api",
-  // hrmsApiUrl: 'http://mob.gigatel.me:40101/api/',
+  // hrmsApiUrl: 'http://prod.gigatel.me:40101/api/',
+  // hrmsUi: 'http://giga.gigasol.in:20101/#/select-company',
+
 
 
   ////////////////////// Development URL /////////////////////////
   apiUrl: "http://mob.gigatel.me:60109/api",
   hrmsApiUrl: 'http://mob.gigatel.me:40101/api/',
+  hrmsUi: 'http://10.0.0.81:20101/#/select-company',
 
 }
 

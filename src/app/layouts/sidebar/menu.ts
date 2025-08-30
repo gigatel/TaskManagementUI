@@ -15,64 +15,31 @@ export class MenuClass {
     let menu: MenuItem[] = [];
     let currentUser = this.tokenStorageService.getUser();
 
-    if (
-      currentUser &&
-      currentUser !== null &&
-      currentUser !== undefined &&
-      Object.keys(currentUser) &&
-      Object.keys(currentUser).length > 0
-    ) {
-      if (currentUser.role == 'SuperAdmin') {
+     if (currentUser && currentUser !== null && currentUser !== undefined && Object.keys(currentUser) && Object.keys(currentUser).length > 0) {
+      if (currentUser.role == "SuperAdmin") {
         return this.menu;
       }
 
       for (let i = 0; i < this.menu.length; i++) {
         for (let j = 0; j < this.menu[i]?.subItems?.length; j++) {
-          for (
-            let k = 0;
-            k < this.menu[i]?.subItems[j]?.subItems?.length;
-            k++
-          ) {
-            if (
-              this.menu[i].subItems[j].subItems[k].policyName ==
-              'NoPolicyCheck' ||
-              this.tokenStorageService.checkPolicies(
-                this.menu[i].subItems[j].subItems[k].policyName
-              )
-            ) {
-              if (
-                menu.filter((x) => x.label == this.menu[i].label).length == 0
-              ) {
+          for (let k = 0; k < this.menu[i]?.subItems[j]?.subItems?.length; k++) {
+            if (this.menu[i].subItems[j].subItems[k].policyName == "NoPolicyCheck" || this.tokenStorageService.checkPolicies(this.menu[i].subItems[j].subItems[k].policyName)) {
+              if (menu.filter(x => x.label == this.menu[i].label).length == 0) {
                 let header = JSON.parse(JSON.stringify(this.menu[i]));
-                header.subItems = [];
-                menu.push(header);
+                header.subItems = []
+                menu.push(header)
               }
-              var header = menu.filter((x) => x.label == this.menu[i].label)[0];
-              if (
-                header.subItems.filter(
-                  (x: any) => x.label == this.menu[i].subItems[j].label
-                ).length == 0
-              ) {
-                let suHeader = JSON.parse(
-                  JSON.stringify(this.menu[i].subItems[j])
-                );
+              var header = menu.filter(x => x.label == this.menu[i].label)[0];
+              if (header.subItems.filter((x: any) => x.label == this.menu[i].subItems[j].label).length == 0) {
+                let suHeader = JSON.parse(JSON.stringify(this.menu[i].subItems[j]));
                 suHeader.subItems = [];
-                header.subItems.push(suHeader);
+                header.subItems.push(suHeader)
               }
-              var subHeader = header.subItems.filter(
-                (x: any) => x.label == this.menu[i].subItems[j].label
-              )[0];
-              if (
-                subHeader.subItems.filter(
-                  (x: any) =>
-                    x.label == this.menu[i].subItems[j].subItems[k].label
-                ).length == 0
-              ) {
-                let subSubHeader = JSON.parse(
-                  JSON.stringify(this.menu[i].subItems[j].subItems[k])
-                );
+              var subHeader = header.subItems.filter((x: any) => x.label == this.menu[i].subItems[j].label)[0]
+              if (subHeader.subItems.filter((x: any) => x.label == this.menu[i].subItems[j].subItems[k].label).length == 0) {
+                let subSubHeader = JSON.parse(JSON.stringify(this.menu[i].subItems[j].subItems[k]));
                 subSubHeader.subItems = [];
-                subHeader.subItems.push(subSubHeader);
+                subHeader.subItems.push(subSubHeader)
               }
             }
           }
@@ -113,6 +80,7 @@ export class MenuClass {
         }
       }
       // return menu;
+
     }
 
     return menu;

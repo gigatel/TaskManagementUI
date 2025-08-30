@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Editor, TOOLBAR_FULL } from 'ngx-editor';
 import { ToastrService } from 'ngx-toastr';
@@ -13,8 +13,8 @@ import { TokenStorageService } from 'src/app/core/services/token-storage.service
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent {
- taskForm!: FormGroup;
- maxDate = new Date();
+  taskForm!: FormGroup;
+  maxDate = new Date();
 
   showBoundaryLinks!: boolean;
   showDirectionLinks!: boolean;
@@ -69,7 +69,9 @@ export class TaskListComponent {
       schedule: new FormControl(''),
       time: new FormControl('', [Validators.required]),
       reminder: new FormControl(''),
-      emails: new FormControl('', [Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})(;(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))*$/)]),
+      // emails: new FormControl('', [Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})(;(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))*$/)]),
+      emails: new FormControl('', [Validators.required, this.multipleEmailsValidator()]),
+
       status: new FormControl(''),
       selecteDay: new FormControl(''),
       selectDate: new FormControl(''),
@@ -123,12 +125,12 @@ export class TaskListComponent {
       scheduleType: this.f['scheduleType'].value ?? '',
       schedule: this.f['schedule'].value ?? '',
       scheduleDay: this.f['selecteDay'].value ?? '',
-      scheduleDate: this.f['scheduleType'].value === 'OneTime' ? this.gs.convertDateObjIntoString(this.f['reminder'].value) : (this.f['selectDate'].value ?  this.gs.convertDateObjIntoString(this.f['selectDate'].value) : ''),
+      scheduleDate: this.f['scheduleType'].value === 'OneTime' ? this.gs.convertDateObjIntoString(this.f['reminder'].value) : (this.f['selectDate'].value ? this.gs.convertDateObjIntoString(this.f['selectDate'].value) : ''),
       scheduleTime: text === 'save' && this.f['time'].value ? this.f['time'].value + '' + ':00' : (this.f['time'].touched || this.f['time'].dirty ? this.f['time'].value + '' + ':00' : this.f['time'].value),
       taskSubject: this.f['subject'].value ?? '',
       taskDescription: textWithLineBreaks ?? '',
-      receiverEmailId: this.f['emails'].value ?? '',
-      endDate: this.f['endDate'].value ?  this.gs.convertDateObjIntoString(this.f['endDate'].value) : ''
+      receiverEmailId: this.f['emails'].value.endsWith(';') ? this.removeMultipleSemiColumn(this.f['emails'].value) :  this.f['emails'].value,
+      endDate: this.f['endDate'].value ? this.gs.convertDateObjIntoString(this.f['endDate'].value) : ''
     }
 
     payload = Object.fromEntries(
@@ -147,7 +149,9 @@ export class TaskListComponent {
       payload.id = this.f['id'].value ?? 0;
     }
 
-    this.insertUpdateTaskSchedules(payload, text);
+    console.log(payload)
+
+    // this.insertUpdateTaskSchedules(payload, text);
 
   }
 
@@ -319,21 +323,21 @@ export class TaskListComponent {
     this.searchAsset('');
   }
 
-  getEmpId(event: any): void{
+  getEmpId(event: any): void {
     this.searchAsset('');
 
   }
 
-  getTaskScheduledEmpDD(): void{
+  getTaskScheduledEmpDD(): void {
     this.tms.getTaskScheduledEmpDD().subscribe({
       next: (res) => {
-        if(res && res.success){
-          if(res.data && res.data.length > 0){
+        if (res && res.success) {
+          if (res.data && res.data.length > 0) {
             this.empList = res.data;
-          }else{
+          } else {
             this.empList = [];
           }
-        }else{
+        } else {
           this.empList = [];
           this.ts.warning(res.message);
         }
@@ -345,20 +349,44 @@ export class TaskListComponent {
     })
   }
 
-  getEmpName(item: any): string{
+  getEmpName(item: any): string {
     return item.empName ? item.empName + '(' + item.employeeCode + ')' : ''
   }
 
-  onSelectAll(): void{
+  onSelectAll(): void {
     const selectedAllEMP = this.empList && this.empList.length > 0 ? this.empList.map((x: any) => x.id) : [];
     this.empId = selectedAllEMP;
     this.searchAsset('');
   }
 
-  onClearAll(): void{
+  onClearAll(): void {
     this.empId = [];
     this.searchAsset('');
 
+  }
+
+  multipleEmailsValidator(): ValidatorFn {
+    return (control: AbstractControl): any => {
+      if (!control.value) return null;
+      const input = control.value.endsWith(';')
+        ? control.value.slice(0, -1)
+        : control.value;
+
+      const emails = input.split(';').map((e: any) => e.trim()).filter((e: any) => e.length > 0);
+
+      const emailRegex = /^[^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/;
+
+      const invalidEmail = emails.find((e: any) => !emailRegex.test(e));
+
+      return invalidEmail ? { invalidEmail: invalidEmail } : null;
+    }
+  }
+
+  removeMultipleSemiColumn(value: string): string{
+    let selectedValue = '';
+    if(value === '' || value === null) return '';
+    selectedValue = value.split(';').map(e => e.trim()).filter(x => x).join(';');
+    return selectedValue
   }
 
 }
