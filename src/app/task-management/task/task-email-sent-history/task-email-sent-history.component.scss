@@ -1,0 +1,7 @@
+.ellipsis-content {
+  white-space: nowrap;        /* Prevents wrapping */
+  overflow: hidden;           /* Hides overflow */
+  text-overflow: ellipsis;    /* Adds ... */
+  display: block;             /* Ensures block layout */
+  max-width: 100%;            /* Restricts to container width */
+}

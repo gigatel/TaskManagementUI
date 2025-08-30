@@ -7,11 +7,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TaskListComponent } from './task-list/task-list.component';
 import { NgxEditorModule } from 'ngx-editor';
+import { TaskEmailSentHistoryComponent } from './task-email-sent-history/task-email-sent-history.component';
 
 
 @NgModule({
   declarations: [
-    TaskListComponent
+    TaskListComponent,
+    TaskEmailSentHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -24,4 +26,6 @@ import { NgxEditorModule } from 'ngx-editor';
     NgxEditorModule
   ]
 })
-export class TaskModule { }
+export class TaskModule { 
+  
+}

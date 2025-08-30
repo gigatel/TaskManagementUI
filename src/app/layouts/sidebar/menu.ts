@@ -108,6 +108,14 @@ export class MenuClass {
                 policyName: 'AccessTaskList',
 
               },
+              {
+                id: 1,
+                label: 'Task Email History',
+                link: '/task-management/task/task-email-history',
+                parentId: 1,
+                policyName: 'AccessTaskList',
+
+              }
             ],
           },
         ],

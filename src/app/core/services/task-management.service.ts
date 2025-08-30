@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { insertUpdateTaskSchedules, getTaskSchedulePaggi, getTaskScheduleById, deleteTaskSchedule, getTaskScheduledEmpDD } from '../models/task-management.models';
+import { insertUpdateTaskSchedules, getTaskSchedulePaggi, getTaskScheduleById, deleteTaskSchedule, getTaskScheduledEmpDD,TaskHistoryResponse, GetDistinctEmailsForDD, } from '../models/task-management.models';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,12 @@ export class TaskManagementService {
 
   getTaskScheduledEmpDD(): Observable<getTaskScheduledEmpDD>{
     return this.http.get<getTaskScheduledEmpDD>(environment.apiUrl + '/TaskManagement/GetTaskScheduledEmpDD').pipe(map(res => res as getTaskScheduledEmpDD))
+  }
+  getTaskEmailSentHistoryPaggi(payload: any): Observable<TaskHistoryResponse> {
+    return this.http.post<TaskHistoryResponse>(environment.apiUrl + '/TaskManagement/GetTaskEmailSentHistoryPaggi',payload ).pipe(map(res => res as TaskHistoryResponse));
+  }
+  GetDistinctEmailsForDD(): Observable<GetDistinctEmailsForDD>{
+    return this.http.get<GetDistinctEmailsForDD>(environment.apiUrl + '/TaskManagement/GetDistinctEmailsForDD').pipe(map(res => res as GetDistinctEmailsForDD))
   }
 
 }
