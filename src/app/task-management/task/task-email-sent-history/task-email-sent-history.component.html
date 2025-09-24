@@ -5,46 +5,35 @@
     </div>
 
     <div class="col-md-2 ms-auto">
-  <ng-select
-    [items]="emailList"
-    bindLabel="email"
-    bindValue="email"
-    placeholder="Select Email..."
-    [(ngModel)]="selectedEmails"
-    [multiple]="true"
-    (ngModelChange)="onEmailChange($event)"
-    id="emailDropdown">
+      <ng-select [items]="emailList" bindLabel="email" bindValue="email" placeholder="Select Email..."
+        [(ngModel)]="selectedEmails" [multiple]="true" (ngModelChange)="onEmailChange($event)" id="emailDropdown">
 
-    <!-- Custom multi-label display -->
-    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-      <div class="ng-value" *ngIf="items.length > 0">
-        <span class="ng-value-icon left" (click)="clear(items[0])" aria-hidden="true">×</span>
-        <span class="ng-value-label">{{ items[0].email }}</span>
-        
-      </div>
-      <div class="ng-value" *ngIf="items.length > 1">
-        <span class="ng-value-label">{{ items.length - 1 }} more...</span>
-      </div>
-    </ng-template>
+        <!-- Custom multi-label display -->
+        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+          <div class="ng-value" *ngIf="items.length > 0">
+            <span class="ng-value-icon left" (click)="clear(items[0])" aria-hidden="true">×</span>
+            <span class="ng-value-label">{{ items[0].email }}</span>
 
-    <!-- Custom dropdown option template -->
-    <ng-template ng-option-tmp let-item="item">
-      <div class="d-flex">
-        {{ item.email }}
-      </div>
-    </ng-template>
+          </div>
+          <div class="ng-value" *ngIf="items.length > 1">
+            <span class="ng-value-label">{{ items.length - 1 }} more...</span>
+          </div>
+        </ng-template>
 
-  </ng-select>
-</div>
+        <!-- Custom dropdown option template -->
+        <ng-template ng-option-tmp let-item="item">
+          <div class="d-flex">
+            {{ item.email }}
+          </div>
+        </ng-template>
 
-
+      </ng-select>
+    </div>
 
     <div class="col-md-2">
       <ng-select [items]="empList" bindLabel="empName" bindValue="id" placeholder="Select Employee..."
         [(ngModel)]="empId" [multiple]="true" (ngModelChange)="getEmpId($event)">
       </ng-select>
-
-
 
       <ng-container *ngIf="empList && empList.length > 0">
         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
@@ -105,7 +94,7 @@
       <tbody>
         <ng-container *ngIf="taskList && taskList.length > 0">
           <tr *ngFor="let item of taskList; let i = index">
-            <td>{{ ((filterInput.page - 1) * filterInput.size) + i + 1 }}</td>
+            <td>{{ item.sNo }}</td>
             <td>{{ item.messageName || '-' }}</td>
             <td>{{ item.emailSubject || '-' }}</td>
             <td class="w-20">
@@ -148,7 +137,6 @@
       <div class="col-md-4 d-flex justify-content-end align-items-center">
         <label class="me-2 fw-bold">Show:</label>
         <select class="form-select w-auto" [(ngModel)]="filterInput.size" (ngModelChange)="onPageSizeChange($event)">
-
           <option [value]="10">10</option>
           <option [value]="25">25</option>
           <option [value]="50">50</option>

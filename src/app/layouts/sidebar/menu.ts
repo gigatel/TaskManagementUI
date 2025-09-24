@@ -106,15 +106,13 @@ export class MenuClass {
                 link: '/task-management/task/task-list',
                 parentId: 1,
                 policyName: 'AccessTaskList',
-
               },
               {
-                id: 1,
+                id: 2,
                 label: 'Task Email History',
                 link: '/task-management/task/task-email-history',
                 parentId: 1,
                 policyName: 'AccessTaskList',
-
               }
             ],
           },

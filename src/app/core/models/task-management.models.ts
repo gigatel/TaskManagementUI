@@ -66,6 +66,7 @@ export interface ScheduleFilterInput {
 }
 
 export interface TaskEmailHistory {
+  sNo: number
   id: number;
   messageName: string;
   emailSubject: string;

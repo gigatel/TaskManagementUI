@@ -11,7 +11,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class TaskEmailSentHistoryComponent implements OnInit {
   private tms = inject(TaskManagementService);
 
-  
+
   showModal = false;
   modalContentSafe: SafeHtml | null = null;
   constructor(private sanitizer: DomSanitizer) { }
@@ -40,7 +40,7 @@ export class TaskEmailSentHistoryComponent implements OnInit {
   //  Employee filter
   empList: any[] = [];
   empId: any[] = [];
-  
+
   emailList:any[] =[];
   selectedEmails: string[] = [];  // for selected values
 
@@ -79,6 +79,9 @@ clearAllEmails() {
         if (res.success && res.data.length > 0) {
           this.taskList = res.data;
           this.totalRecords = res.recordsFiltered;
+          for(let i = 0; i< this.taskList.length;i++ ){
+            this.taskList[i].sNo = this.filterInput.size * (this.filterInput.page - 1) + i + 1
+          }
         } else {
           this.taskList = [];
           this.totalRecords = 0;
@@ -92,7 +95,7 @@ clearAllEmails() {
     });
   }
 
-  
+
 
   onSearchChange(): void {
     this.filterInput.search = this.searchTerm;
@@ -168,7 +171,7 @@ clearAllEmails() {
     this.loadTaskHistory();
   }
 
-  
+
   getPreviewText(html: string | null | undefined, limit = 15): string {
     if (!html) { return '-'; }
     const text = html.replace(/<[^>]+>/g, '').trim(); // strip tags

@@ -149,9 +149,7 @@ export class TaskListComponent {
       payload.id = this.f['id'].value ?? 0;
     }
 
-    console.log(payload)
-
-    // this.insertUpdateTaskSchedules(payload, text);
+    this.insertUpdateTaskSchedules(payload, text);
 
   }
 
