@@ -29,6 +29,7 @@ export const environment = {
 
   ////////////////////// Development URL /////////////////////////
   apiUrl: "http://mob.gigatel.me:60109/api",
+  // apiUrl: "http://localhost:60109/api",
   hrmsApiUrl: 'http://mob.gigatel.me:40101/api/',
   hrmsUi: 'http://10.0.0.81:20101/#/select-company',
 

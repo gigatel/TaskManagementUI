@@ -14,12 +14,17 @@ export class TaskEmailSentHistoryComponent implements OnInit {
 
   showModal = false;
   modalContentSafe: SafeHtml | null = null;
-  constructor(private sanitizer: DomSanitizer) { }
-
-
   taskList: TaskEmailHistory[] = [];
+  status: string[] = ['Active'];
+  empList: any[] = [];
+  empId: any[] = [];
+  emailList: any[] = [];
+  selectedEmails: string[] = [];
+  totalRecords = 0;
+  searchTerm = '';
+
   filterInput: ScheduleFilterInput = {
-    emailIds:'',
+    emailIds: '',
     empIds: '',
     scheduleType: '',
     status: 'Active',
@@ -28,39 +33,30 @@ export class TaskEmailSentHistoryComponent implements OnInit {
     search: ''
   };
 
-  totalRecords = 0;
-  searchTerm = '';
-
   statusDD = [
     { id: 'Active', name: 'Active' },
     { id: 'Inactive', name: 'Inactive' }
   ];
-  status: string[] = ['Active'];
 
-  //  Employee filter
-  empList: any[] = [];
-  empId: any[] = [];
+  constructor(private sanitizer: DomSanitizer) { }
 
-  emailList:any[] =[];
-  selectedEmails: string[] = [];  // for selected values
+  onEmailChange(selected: string[]) {
+    console.log("Selected Emails: ", selected);
+    this.loadTaskHistory();
+  }
 
-onEmailChange(selected: string[]) {
-  console.log("Selected Emails: ", selected);
-  this.loadTaskHistory();
-}
+  selectAllEmails() {
+    this.selectedEmails = [...this.emailList];
+  }
 
-selectAllEmails() {
-  this.selectedEmails = [...this.emailList];
-}
-
-clearAllEmails() {
-  this.selectedEmails = [];
-}
+  clearAllEmails() {
+    this.selectedEmails = [];
+  }
 
   ngOnInit(): void {
     this.loadTaskHistory();
-    this.getTaskScheduledEmpDD(); // load employee list
-    this. GetDistinctEmailsForDD();
+    this.getTaskScheduledEmpDD();
+    this.GetDistinctEmailsForDD();
   }
 
   getStatus(selected: string[]): void {
@@ -72,7 +68,7 @@ clearAllEmails() {
 
   loadTaskHistory(): void {
     this.filterInput.empIds = this.empId.length > 0 ? this.empId.join(',') : '';
-   this.filterInput.emailIds = this.selectedEmails.length > 0 ? this.selectedEmails.join(',') : '';
+    this.filterInput.emailIds = this.selectedEmails.length > 0 ? this.selectedEmails.join(',') : '';
 
     this.tms.getTaskEmailSentHistoryPaggi(this.filterInput).subscribe({
       next: (res) => {
@@ -96,7 +92,6 @@ clearAllEmails() {
   }
 
 
-
   onSearchChange(): void {
     this.filterInput.search = this.searchTerm;
     this.filterInput.page = 1;
@@ -117,9 +112,7 @@ clearAllEmails() {
   pageChanged(event: any): void {
     this.onPageChange(event.page);
   }
-
-
-  //  Employee Methods
+  
   getTaskScheduledEmpDD(): void {
     this.tms.getTaskScheduledEmpDD().subscribe({
       next: (res) => {
@@ -134,17 +127,18 @@ clearAllEmails() {
       }
     });
   }
+
   GetDistinctEmailsForDD(): void {
     this.tms.GetDistinctEmailsForDD().subscribe({
       next: (res) => {
         if (res && res.success) {
-           this.emailList = res.data && res.data.length > 0 ? res.data : [];
+          this.emailList = res.data && res.data.length > 0 ? res.data : [];
         } else {
-           this.emailList = [];
+          this.emailList = [];
         }
       },
       error: () => {
-         this.emailList = [];
+        this.emailList = [];
       }
     });
   }

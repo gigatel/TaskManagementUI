@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GlobalService } from 'src/app/core/services/global-service';
 import { TaskManagementService } from 'src/app/core/services/task-management.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-task-list',
@@ -13,8 +14,10 @@ import { TokenStorageService } from 'src/app/core/services/token-storage.service
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent {
-  taskForm!: FormGroup;
-  maxDate = new Date();
+  showModal = false;
+  modalContentSafe: SafeHtml | null = null;
+ taskForm!: FormGroup;
+ maxDate = new Date();
 
   showBoundaryLinks!: boolean;
   showDirectionLinks!: boolean;
@@ -22,7 +25,7 @@ export class TaskListComponent {
 
   totalRecords: number = 0;
   showEntries: number = 0;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 10;
   pageSize: number = 1;
 
   editor: any = Editor;
@@ -60,6 +63,7 @@ export class TaskListComponent {
   private tms = inject(TaskManagementService);
   public tks = inject(TokenStorageService);
   private gs = inject(GlobalService);
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.taskForm = new FormGroup({
@@ -361,6 +365,28 @@ export class TaskListComponent {
     this.empId = [];
     this.searchAsset('');
 
+  }
+  getPreviewText(html: string | null | undefined, limit = 15): string {
+    if (!html) { return '-'; }
+    const text = html.replace(/<[^>]+>/g, '').trim(); // strip tags
+    if (!text) { return '-'; }
+    return text.length > limit ? text.slice(0, limit) + '...' : text;
+  }
+
+  isLong(html: string | null | undefined, limit = 15): boolean {
+    if (!html) { return false; }
+    const text = html.replace(/<[^>]+>/g, '').trim();
+    return text.length > limit;
+  }
+
+  openModal(html: string | null | undefined): void {
+    this.modalContentSafe = this.sanitizer.bypassSecurityTrustHtml(html || '');
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.modalContentSafe = null;
   }
 
   multipleEmailsValidator(): ValidatorFn {

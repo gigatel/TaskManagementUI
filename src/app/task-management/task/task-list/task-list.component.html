@@ -220,7 +220,15 @@
             <td>{{item.sNo ?? 0}}</td>
             <td>{{ item.taskName || '-' }}</td>
             <td>{{ item.taskSubject || '-' }}</td>
-            <td>{{ item.taskDescription || '-' }}</td>
+            <td class="w-20">
+              <div class="ellipsis-content">
+                {{ getPreviewText(item.taskDescription, 15) }}
+                <a *ngIf="isLong(item.taskDescription, 15)" href="javascript:void(0)"
+                  (click)="openModal(item.taskDescription)">
+                  Read more
+                </a>
+              </div>
+            </td>
             <td>{{ item.scheduleType || '-' }}</td>
             <td>{{ item.schedule || '-' }}</td>
             <td>{{ item.scheduleDate ? (item.scheduleDate | date: 'dd-MM-yyyy') : '-' }}</td>
@@ -282,8 +290,7 @@
             <p class="mb-2 me-2 fw-bold mt-2">Show:</p>
 
             <select class="custom-select form-control me-2" (change)="setItemsPerPage($event)" #page>
-              <option selected [value]="5">5</option>
-              <option [value]="10">10</option>
+              <option selected [value]="10">10</option>
               <option [value]="25">25</option>
               <option [value]="50">50</option>
               <option [value]="75">75</option>
@@ -294,5 +301,25 @@
         </div>
       </div>
     </div>
+    <!-- Full Content Modal -->
+    <div *ngIf="showModal" class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Task Description</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body" style="max-height: 70vh; overflow: auto;">
+            <div [innerHTML]="modalContentSafe"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backdrop -->
+    <div *ngIf="showModal" class="modal-backdrop fade show"></div>
   </div>
 </div>
