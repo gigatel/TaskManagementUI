@@ -16,8 +16,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class TaskListComponent {
   showModal = false;
   modalContentSafe: SafeHtml | null = null;
- taskForm!: FormGroup;
- maxDate = new Date();
+  taskForm!: FormGroup;
+  maxDate = new Date();
 
   showBoundaryLinks!: boolean;
   showDirectionLinks!: boolean;
@@ -119,10 +119,11 @@ export class TaskListComponent {
 
     const html = this.f['description'].value;
     const textWithLineBreaks = html
-      .replace(/<p>/g, '')           // remove <p>
-      .replace(/<\/p>/g, '<br>')       // replace </p> with newline
-      .replace(/<br\s*\/?>/g, '<br>')  // replace <br> with newline
-      .replace(/&nbsp;/g, ' ');
+      .replace(/<p>/g, '')             // remove <p>
+      .replace(/<\/p>/g, '<br>')       // replace </p> with <br>
+      .replace(/<br\s*\/?>/g, '<br>')  // normalize <br>
+      .replace(/ /g, '&nbsp;');        // replace spaces with &nbsp;
+    ;
 
     payload = {
       taskName: this.f['name'].value ?? '',
@@ -133,7 +134,7 @@ export class TaskListComponent {
       scheduleTime: text === 'save' && this.f['time'].value ? this.f['time'].value + '' + ':00' : (this.f['time'].touched || this.f['time'].dirty ? this.f['time'].value + '' + ':00' : this.f['time'].value),
       taskSubject: this.f['subject'].value ?? '',
       taskDescription: textWithLineBreaks ?? '',
-      receiverEmailId: this.f['emails'].value.endsWith(';') ? this.removeMultipleSemiColumn(this.f['emails'].value) :  this.f['emails'].value,
+      receiverEmailId: this.f['emails'].value.endsWith(';') ? this.removeMultipleSemiColumn(this.f['emails'].value) : this.f['emails'].value,
       endDate: this.f['endDate'].value ? this.gs.convertDateObjIntoString(this.f['endDate'].value) : ''
     }
 
@@ -406,9 +407,9 @@ export class TaskListComponent {
     }
   }
 
-  removeMultipleSemiColumn(value: string): string{
+  removeMultipleSemiColumn(value: string): string {
     let selectedValue = '';
-    if(value === '' || value === null) return '';
+    if (value === '' || value === null) return '';
     selectedValue = value.split(';').map(e => e.trim()).filter(x => x).join(';');
     return selectedValue
   }
